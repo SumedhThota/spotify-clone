@@ -1,16 +1,27 @@
 import './App.css';
 import Login from './Login.js'
-import React, {useEffect} from 'react';
-import { getTokenFromUrl } from './Spotify.js';
+import React, {useEffect, useState} from 'react';
+import { getTokenFromUrl } from './spotify.js';
 
 function App() {
+  const [token, setToken] = useState(null)
   useEffect(() => {
-    const token = getTokenFromUrl();
-    console.log("I have a token", token)
+    const hash = getTokenFromUrl();
+    window.location.hash = ""
+    console.log("I have a token", hash)
+    const _token = hash.access_token
+    if(_token){
+      setToken(_token)
+    }
   }, [])
   return (
     <div className="App">
-      <Login />
+      {
+        token?
+        (<h1>I am logged in</h1>):
+        (<Login />)
+      }
+      
     </div>
   );
 }
